@@ -1,0 +1,19 @@
+router.post("/", async (req, res) => {
+try {
+const token = req.headers.authorization.split(" ")[1];
+  getAccessToken(token);
+
+res.status(200).send("OK");
+} catch (error) {
+res.status(401).send("Unauthorized");
+}});
+
+async function getAccessToken(code) {
+  try {
+    const { tokens } = await oAuth2Client.getToken(code);
+    logger.info("Tokens : ", tokens);
+    saveCredentials(tokens);
+  } catch (err) {
+    logger.info("Error :", err);
+  }
+}
