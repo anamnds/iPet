@@ -1,0 +1,49 @@
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+
+function configureGSignin() {
+  GoogleSignin.configure({
+    androidClientId: 'ANDROID_CLIENT from Google Cloud Console',
+    scopes: ['https://www.googleapis.com/auth/gmail.readonly'],     // find more scopes here https://developers.google.com/identity/protocols/oauth2/scopes#gmail
+    webClientId: `WebClientId from Google Cloud Console`,
+    offlineAccess: true, // if you want to process data on backend
+    iosClientId: `IOS_CLIENT_ID from Google Cloud Console`,
+  });
+}
+const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      //save details of userInfo in the frontend and request backend using userinfo.serverAuthCode
+     
+      //Navigate user where you want and store information
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+    };
+function backendRequest() {
+const url = 'YOUR_BACKEND_URL';
+const serverAuthCode = the_same_code_you_get_in_userinfo
+axios.post(url,{body data},{ headers: {
+        Authorization: `Basic ${serverAuthCode}`,
+        'Content-Type': 'application/json',
+      },
+    },
+  )
+  .then(function (response) {
+    //on successful request
+  })
+  .catch(function (error) {
+    //on error
+  })
+  .finally(function () {
+    // always executed
+  });
+}
